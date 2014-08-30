@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9ae3d89b668f4ee49174f232a2e9502f" Name="Diagram1" >
+        <EntityTypeShape EntityType="Library.Book" Width="1.5" PointX="1" PointY="1" />
+        <EntityTypeShape EntityType="Library.Author" Width="1.5" PointX="6.25" PointY="0.875" />
+        <EntityTypeShape EntityType="Library.Book_Author" Width="1.5" PointX="3.875" PointY="0.875" />
+        <AssociationConnector Association="Library.BookBook_Author" />
+        <AssociationConnector Association="Library.AuthorBook_Author" />
+        <EntityTypeShape EntityType="Library.Member" Width="1.5" PointX="1" PointY="4.375" />
+        <EntityTypeShape EntityType="Library.Book_Borrowed" Width="1.5" PointX="3.75" PointY="3.625" />
+        <AssociationConnector Association="Library.BookBook_Borrowed" />
+        <AssociationConnector Association="Library.MemberBook_Borrowed" />
+        <EntityTypeShape EntityType="Library.Admin" Width="1.5" PointX="6.125" PointY="3.375" />
+        <EntityTypeShape EntityType="Library.MembershipPlan" Width="1.5" PointX="6.125" PointY="5.5" />
+        <EntityTypeShape EntityType="Library.Member_MembershipPlan" Width="1.5" PointX="2.5" PointY="7" />
+        <AssociationConnector Association="Library.MemberMember_MembershipPlan" />
+        <AssociationConnector Association="Library.MembershipPlanMember_MembershipPlan" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

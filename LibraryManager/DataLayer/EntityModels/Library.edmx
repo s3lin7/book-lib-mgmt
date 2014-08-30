@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Library.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="LibraryTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Library" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="LibraryContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books1" EntityType="Library.Book" />
+          <EntitySet Name="Authors" EntityType="Library.Author" />
+          <EntitySet Name="Book_Author" EntityType="Library.Book_Author" />
+          <AssociationSet Name="BookBook_Author" Association="Library.BookBook_Author">
+            <End Role="Book" EntitySet="Books1" />
+            <End Role="Book_Author" EntitySet="Book_Author" />
+          </AssociationSet>
+          <AssociationSet Name="AuthorBook_Author" Association="Library.AuthorBook_Author">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="Book_Author" EntitySet="Book_Author" />
+          </AssociationSet>
+          <EntitySet Name="Members" EntityType="Library.Member" />
+          <EntitySet Name="Book_Borrowed" EntityType="Library.Book_Borrowed" />
+          <AssociationSet Name="BookBook_Borrowed" Association="Library.BookBook_Borrowed">
+            <End Role="Book" EntitySet="Books1" />
+            <End Role="Book_Borrowed" EntitySet="Book_Borrowed" />
+          </AssociationSet>
+          <AssociationSet Name="MemberBook_Borrowed" Association="Library.MemberBook_Borrowed">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Book_Borrowed" EntitySet="Book_Borrowed" />
+          </AssociationSet>
+          <EntitySet Name="Admins" EntityType="Library.Admin" />
+          <EntitySet Name="MembershipPlans" EntityType="Library.MembershipPlan" />
+          <EntitySet Name="Member_MembershipPlan" EntityType="Library.Member_MembershipPlan" />
+          <AssociationSet Name="MemberMember_MembershipPlan" Association="Library.MemberMember_MembershipPlan">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Member_MembershipPlan" EntitySet="Member_MembershipPlan" />
+          </AssociationSet>
+          <AssociationSet Name="MembershipPlanMember_MembershipPlan" Association="Library.MembershipPlanMember_MembershipPlan">
+            <End Role="MembershipPlan" EntitySet="MembershipPlans" />
+            <End Role="Member_MembershipPlan" EntitySet="Member_MembershipPlan" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="ISBN" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="Category" Type="String" Nullable="false" />
+          <Property Name="PublicationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Book_Author" Relationship="Library.BookBook_Author" FromRole="Book" ToRole="Book_Author" />
+          <NavigationProperty Name="Book_Borrowed" Relationship="Library.BookBook_Borrowed" FromRole="Book" ToRole="Book_Borrowed" />
+          <Property Name="NumberOfCopies" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <NavigationProperty Name="Book_Author" Relationship="Library.AuthorBook_Author" FromRole="Author" ToRole="Book_Author" />
+        </EntityType>
+        <EntityType Name="Book_Author">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <NavigationProperty Name="Book" Relationship="Library.BookBook_Author" FromRole="Book_Author" ToRole="Book" />
+          <NavigationProperty Name="Author" Relationship="Library.AuthorBook_Author" FromRole="Book_Author" ToRole="Author" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="BookBook_Author">
+          <End Type="Library.Book" Role="Book" Multiplicity="1" />
+          <End Type="Library.Book_Author" Role="Book_Author" Multiplicity="*" />
+        </Association>
+        <Association Name="AuthorBook_Author">
+          <End Type="Library.Author" Role="Author" Multiplicity="1" />
+          <End Type="Library.Book_Author" Role="Book_Author" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="JoiningDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Book_Borrowed" Relationship="Library.MemberBook_Borrowed" FromRole="Member" ToRole="Book_Borrowed" />
+          <NavigationProperty Name="Member_MembershipPlan" Relationship="Library.MemberMember_MembershipPlan" FromRole="Member" ToRole="Member_MembershipPlan" />
+        </EntityType>
+        <EntityType Name="Book_Borrowed">
+          <Key>
+            <PropertyRef Name="BookId" />
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <NavigationProperty Name="Book" Relationship="Library.BookBook_Borrowed" FromRole="Book_Borrowed" ToRole="Book" />
+          <NavigationProperty Name="Member" Relationship="Library.MemberBook_Borrowed" FromRole="Book_Borrowed" ToRole="Member" />
+          <Property Name="BookId" Type="Int32" Nullable="false" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="BorrowedOn" Type="DateTime" Nullable="false" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" />
+          <Property Name="Returned" Type="Boolean" Nullable="false" />
+          <Property Name="ReturnDate" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <Association Name="BookBook_Borrowed">
+          <End Type="Library.Book" Role="Book" Multiplicity="1" />
+          <End Type="Library.Book_Borrowed" Role="Book_Borrowed" Multiplicity="*" />
+        </Association>
+        <Association Name="MemberBook_Borrowed">
+          <End Type="Library.Member" Role="Member" Multiplicity="1" />
+          <End Type="Library.Book_Borrowed" Role="Book_Borrowed" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MembershipPlan">
+          <Key>
+            <PropertyRef Name="MembershipPlanId" />
+          </Key>
+          <Property Name="MembershipPlanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="Fee" Type="String" Nullable="false" />
+          <Property Name="DueDateLimit" Type="String" Nullable="false" />
+          <Property Name="NumberOfBooks" Type="String" Nullable="false" />
+          <NavigationProperty Name="Member_MembershipPlan" Relationship="Library.MembershipPlanMember_MembershipPlan" FromRole="MembershipPlan" ToRole="Member_MembershipPlan" />
+        </EntityType>
+        <EntityType Name="Member_MembershipPlan">
+          <Key>
+            <PropertyRef Name="MemberId" />
+            <PropertyRef Name="MembershipPlanId" />
+          </Key>
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="MembershipPlanId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="Library.MemberMember_MembershipPlan" FromRole="Member_MembershipPlan" ToRole="Member" />
+          <NavigationProperty Name="MembershipPlan" Relationship="Library.MembershipPlanMember_MembershipPlan" FromRole="Member_MembershipPlan" ToRole="MembershipPlan" />
+        </EntityType>
+        <Association Name="MemberMember_MembershipPlan">
+          <End Type="Library.Member" Role="Member" Multiplicity="1" />
+          <End Type="Library.Member_MembershipPlan" Role="Member_MembershipPlan" Multiplicity="*" />
+        </Association>
+        <Association Name="MembershipPlanMember_MembershipPlan">
+          <End Type="Library.MembershipPlan" Role="MembershipPlan" Multiplicity="1" />
+          <End Type="Library.Member_MembershipPlan" Role="Member_MembershipPlan" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Library" />
+        <Alias Key="Target" Value="Library.Store" />
+        <EntityContainerMapping CdmEntityContainer="LibraryContainer" StorageEntityContainer="LibraryTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
