@@ -30,7 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -42,10 +49,54 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="EntityModels\Admin.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Author.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Book.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Book_Author.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Book_Borrowed.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Library.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Library.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Library.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Library.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModels\Library.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Library.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\LibraryModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LibraryModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\LibraryModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Member.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\MembershipPlan.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModels\Member_MembershipPlan.cs">
+      <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,9 +108,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="EntityModels\Library.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Library.Context.cs</LastGenOutput>
+      <DependentUpon>Library.edmx</DependentUpon>
+    </None>
     <None Include="EntityModels\Library.edmx.diagram">
       <DependentUpon>Library.edmx</DependentUpon>
     </None>
+    <None Include="EntityModels\Library.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Library.cs</LastGenOutput>
+      <DependentUpon>Library.edmx</DependentUpon>
+    </None>
+    <None Include="EntityModels\LibraryModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LibraryModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="EntityModels\LibraryModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LibraryModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntityModels\Library.edmx.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,46 +4,232 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Library.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="LibraryTargetContainer" >
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="Library.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="LibraryStoreContainer">
+    <EntitySet Name="Books" EntityType="Library.Store.Books" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Authors" EntityType="Library.Store.Authors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Books_Authors" EntityType="Library.Store.Books_Authors" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Members" EntityType="Library.Store.Members" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Books_Borrowed" EntityType="Library.Store.Books_Borrowed" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Admins" EntityType="Library.Store.Admins" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MembershipPlans" EntityType="Library.Store.MembershipPlans" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Members_MembershipPlans" EntityType="Library.Store.Members_MembershipPlans" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="BookBook_Author" Association="Library.Store.BookBook_Author">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="Book_Author" EntitySet="Books_Authors" />
+    </AssociationSet>
+    <AssociationSet Name="AuthorBook_Author" Association="Library.Store.AuthorBook_Author">
+      <End Role="Author" EntitySet="Authors" />
+      <End Role="Book_Author" EntitySet="Books_Authors" />
+    </AssociationSet>
+    <AssociationSet Name="BookBook_Borrowed" Association="Library.Store.BookBook_Borrowed">
+      <End Role="Book" EntitySet="Books" />
+      <End Role="Book_Borrowed" EntitySet="Books_Borrowed" />
+    </AssociationSet>
+    <AssociationSet Name="MemberBook_Borrowed" Association="Library.Store.MemberBook_Borrowed">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="Book_Borrowed" EntitySet="Books_Borrowed" />
+    </AssociationSet>
+    <AssociationSet Name="MemberMember_MembershipPlan" Association="Library.Store.MemberMember_MembershipPlan">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="Member_MembershipPlan" EntitySet="Members_MembershipPlans" />
+    </AssociationSet>
+    <AssociationSet Name="MembershipPlanMember_MembershipPlan" Association="Library.Store.MembershipPlanMember_MembershipPlan">
+      <End Role="MembershipPlan" EntitySet="MembershipPlans" />
+      <End Role="Member_MembershipPlan" EntitySet="Members_MembershipPlans" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="BookId" />
+    </Key>
+    <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ISBN" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Category" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PublicationDate" Type="datetime" Nullable="false" />
+    <Property Name="NumberOfCopies" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Authors">
+    <Key>
+      <PropertyRef Name="AuthorId" />
+    </Key>
+    <Property Name="AuthorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books_Authors">
+    <Key>
+      <PropertyRef Name="BookId" />
+      <PropertyRef Name="AuthorId" />
+    </Key>
+    <Property Name="BookId" Type="int" Nullable="false" />
+    <Property Name="AuthorId" Type="int" Nullable="false" />
+    <Property Name="Book_BookId" Type="int" Nullable="false" />
+    <Property Name="Author_AuthorId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Members">
+    <Key>
+      <PropertyRef Name="MemberId" />
+    </Key>
+    <Property Name="MemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="JoiningDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Books_Borrowed">
+    <Key>
+      <PropertyRef Name="BookId" />
+      <PropertyRef Name="MemberId" />
+    </Key>
+    <Property Name="BookId" Type="int" Nullable="false" />
+    <Property Name="MemberId" Type="int" Nullable="false" />
+    <Property Name="BorrowedOn" Type="datetime" Nullable="false" />
+    <Property Name="DueDate" Type="datetime" Nullable="false" />
+    <Property Name="Returned" Type="bit" Nullable="false" />
+    <Property Name="ReturnDate" Type="datetime" Nullable="false" />
+    <Property Name="Book_BookId" Type="int" Nullable="false" />
+    <Property Name="Member_MemberId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Admins">
+    <Key>
+      <PropertyRef Name="AdminId" />
+    </Key>
+    <Property Name="AdminId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MembershipPlans">
+    <Key>
+      <PropertyRef Name="MembershipPlanId" />
+    </Key>
+    <Property Name="MembershipPlanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Fee" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DueDateLimit" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="NumberOfBooks" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Members_MembershipPlans">
+    <Key>
+      <PropertyRef Name="MemberId" />
+      <PropertyRef Name="MembershipPlanId" />
+    </Key>
+    <Property Name="MemberId" Type="int" Nullable="false" />
+    <Property Name="MembershipPlanId" Type="int" Nullable="false" />
+    <Property Name="Member_MemberId" Type="int" Nullable="false" />
+    <Property Name="MembershipPlan_MembershipPlanId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="BookBook_Author">
+    <End Role="Book" Type="Library.Store.Books" Multiplicity="1" />
+    <End Role="Book_Author" Type="Library.Store.Books_Authors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Book_Author">
+        <PropertyRef Name="Book_BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AuthorBook_Author">
+    <End Role="Author" Type="Library.Store.Authors" Multiplicity="1" />
+    <End Role="Book_Author" Type="Library.Store.Books_Authors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Author">
+        <PropertyRef Name="AuthorId" />
+      </Principal>
+      <Dependent Role="Book_Author">
+        <PropertyRef Name="Author_AuthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BookBook_Borrowed">
+    <End Role="Book" Type="Library.Store.Books" Multiplicity="1" />
+    <End Role="Book_Borrowed" Type="Library.Store.Books_Borrowed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookId" />
+      </Principal>
+      <Dependent Role="Book_Borrowed">
+        <PropertyRef Name="Book_BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MemberBook_Borrowed">
+    <End Role="Member" Type="Library.Store.Members" Multiplicity="1" />
+    <End Role="Book_Borrowed" Type="Library.Store.Books_Borrowed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberId" />
+      </Principal>
+      <Dependent Role="Book_Borrowed">
+        <PropertyRef Name="Member_MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MemberMember_MembershipPlan">
+    <End Role="Member" Type="Library.Store.Members" Multiplicity="1" />
+    <End Role="Member_MembershipPlan" Type="Library.Store.Members_MembershipPlans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberId" />
+      </Principal>
+      <Dependent Role="Member_MembershipPlan">
+        <PropertyRef Name="Member_MemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MembershipPlanMember_MembershipPlan">
+    <End Role="MembershipPlan" Type="Library.Store.MembershipPlans" Multiplicity="1" />
+    <End Role="Member_MembershipPlan" Type="Library.Store.Members_MembershipPlans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MembershipPlan">
+        <PropertyRef Name="MembershipPlanId" />
+      </Principal>
+      <Dependent Role="Member_MembershipPlan">
+        <PropertyRef Name="MembershipPlan_MembershipPlanId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Library" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
         <EntityContainer Name="LibraryContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Books1" EntityType="Library.Book" />
+          <EntitySet Name="Books" EntityType="Library.Book" />
           <EntitySet Name="Authors" EntityType="Library.Author" />
-          <EntitySet Name="Book_Author" EntityType="Library.Book_Author" />
+          <EntitySet Name="Books_Authors" EntityType="Library.Book_Author" />
           <AssociationSet Name="BookBook_Author" Association="Library.BookBook_Author">
-            <End Role="Book" EntitySet="Books1" />
-            <End Role="Book_Author" EntitySet="Book_Author" />
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Book_Author" EntitySet="Books_Authors" />
           </AssociationSet>
           <AssociationSet Name="AuthorBook_Author" Association="Library.AuthorBook_Author">
             <End Role="Author" EntitySet="Authors" />
-            <End Role="Book_Author" EntitySet="Book_Author" />
+            <End Role="Book_Author" EntitySet="Books_Authors" />
           </AssociationSet>
           <EntitySet Name="Members" EntityType="Library.Member" />
-          <EntitySet Name="Book_Borrowed" EntityType="Library.Book_Borrowed" />
+          <EntitySet Name="Books_Borrowed" EntityType="Library.Book_Borrowed" />
           <AssociationSet Name="BookBook_Borrowed" Association="Library.BookBook_Borrowed">
-            <End Role="Book" EntitySet="Books1" />
-            <End Role="Book_Borrowed" EntitySet="Book_Borrowed" />
+            <End Role="Book" EntitySet="Books" />
+            <End Role="Book_Borrowed" EntitySet="Books_Borrowed" />
           </AssociationSet>
           <AssociationSet Name="MemberBook_Borrowed" Association="Library.MemberBook_Borrowed">
             <End Role="Member" EntitySet="Members" />
-            <End Role="Book_Borrowed" EntitySet="Book_Borrowed" />
+            <End Role="Book_Borrowed" EntitySet="Books_Borrowed" />
           </AssociationSet>
           <EntitySet Name="Admins" EntityType="Library.Admin" />
           <EntitySet Name="MembershipPlans" EntityType="Library.MembershipPlan" />
-          <EntitySet Name="Member_MembershipPlan" EntityType="Library.Member_MembershipPlan" />
+          <EntitySet Name="Members_MembershipPlans" EntityType="Library.Member_MembershipPlan" />
           <AssociationSet Name="MemberMember_MembershipPlan" Association="Library.MemberMember_MembershipPlan">
             <End Role="Member" EntitySet="Members" />
-            <End Role="Member_MembershipPlan" EntitySet="Member_MembershipPlan" />
+            <End Role="Member_MembershipPlan" EntitySet="Members_MembershipPlans" />
           </AssociationSet>
           <AssociationSet Name="MembershipPlanMember_MembershipPlan" Association="Library.MembershipPlanMember_MembershipPlan">
             <End Role="MembershipPlan" EntitySet="MembershipPlans" />
-            <End Role="Member_MembershipPlan" EntitySet="Member_MembershipPlan" />
+            <End Role="Member_MembershipPlan" EntitySet="Members_MembershipPlans" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Book">
@@ -163,13 +349,146 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="Library" />
-        <Alias Key="Target" Value="Library.Store" />
-        <EntityContainerMapping CdmEntityContainer="LibraryContainer" StorageEntityContainer="LibraryTargetContainer">
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LibraryStoreContainer" CdmEntityContainer="LibraryContainer">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Book)">
+        <MappingFragment StoreEntitySet="Books">
+          <ScalarProperty Name="BookId" ColumnName="BookId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
+          <ScalarProperty Name="NumberOfCopies" ColumnName="NumberOfCopies" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Authors">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Author)">
+        <MappingFragment StoreEntitySet="Authors">
+          <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Books_Authors">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Book_Author)">
+        <MappingFragment StoreEntitySet="Books_Authors">
+          <ScalarProperty Name="BookId" ColumnName="BookId" />
+          <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Member)">
+        <MappingFragment StoreEntitySet="Members">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Books_Borrowed">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Book_Borrowed)">
+        <MappingFragment StoreEntitySet="Books_Borrowed">
+          <ScalarProperty Name="BookId" ColumnName="BookId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="BorrowedOn" ColumnName="BorrowedOn" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="Returned" ColumnName="Returned" />
+          <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Admins">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Admin)">
+        <MappingFragment StoreEntitySet="Admins">
+          <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MembershipPlans">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.MembershipPlan)">
+        <MappingFragment StoreEntitySet="MembershipPlans">
+          <ScalarProperty Name="MembershipPlanId" ColumnName="MembershipPlanId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Fee" ColumnName="Fee" />
+          <ScalarProperty Name="DueDateLimit" ColumnName="DueDateLimit" />
+          <ScalarProperty Name="NumberOfBooks" ColumnName="NumberOfBooks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members_MembershipPlans">
+      <EntityTypeMapping TypeName="IsTypeOf(Library.Member_MembershipPlan)">
+        <MappingFragment StoreEntitySet="Members_MembershipPlans">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MembershipPlanId" ColumnName="MembershipPlanId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="BookBook_Author" TypeName="Library.BookBook_Author" StoreEntitySet="Books_Authors">
+      <EndProperty Name="Book">
+        <ScalarProperty Name="BookId" ColumnName="Book_BookId" />
+      </EndProperty>
+      <EndProperty Name="Book_Author">
+        <ScalarProperty Name="BookId" ColumnName="BookId" />
+        <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="AuthorBook_Author" TypeName="Library.AuthorBook_Author" StoreEntitySet="Books_Authors">
+      <EndProperty Name="Author">
+        <ScalarProperty Name="AuthorId" ColumnName="Author_AuthorId" />
+      </EndProperty>
+      <EndProperty Name="Book_Author">
+        <ScalarProperty Name="BookId" ColumnName="BookId" />
+        <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BookBook_Borrowed" TypeName="Library.BookBook_Borrowed" StoreEntitySet="Books_Borrowed">
+      <EndProperty Name="Book">
+        <ScalarProperty Name="BookId" ColumnName="Book_BookId" />
+      </EndProperty>
+      <EndProperty Name="Book_Borrowed">
+        <ScalarProperty Name="BookId" ColumnName="BookId" />
+        <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MemberBook_Borrowed" TypeName="Library.MemberBook_Borrowed" StoreEntitySet="Books_Borrowed">
+      <EndProperty Name="Member">
+        <ScalarProperty Name="MemberId" ColumnName="Member_MemberId" />
+      </EndProperty>
+      <EndProperty Name="Book_Borrowed">
+        <ScalarProperty Name="BookId" ColumnName="BookId" />
+        <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MemberMember_MembershipPlan" TypeName="Library.MemberMember_MembershipPlan" StoreEntitySet="Members_MembershipPlans">
+      <EndProperty Name="Member">
+        <ScalarProperty Name="MemberId" ColumnName="Member_MemberId" />
+      </EndProperty>
+      <EndProperty Name="Member_MembershipPlan">
+        <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        <ScalarProperty Name="MembershipPlanId" ColumnName="MembershipPlanId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="MembershipPlanMember_MembershipPlan" TypeName="Library.MembershipPlanMember_MembershipPlan" StoreEntitySet="Members_MembershipPlans">
+      <EndProperty Name="MembershipPlan">
+        <ScalarProperty Name="MembershipPlanId" ColumnName="MembershipPlan_MembershipPlanId" />
+      </EndProperty>
+      <EndProperty Name="Member_MembershipPlan">
+        <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        <ScalarProperty Name="MembershipPlanId" ColumnName="MembershipPlanId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -183,6 +502,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
