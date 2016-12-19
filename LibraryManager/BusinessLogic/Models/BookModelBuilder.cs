@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-    public class BookModelBuilder
+    public class BookModelBuilder 
     {
         private IBookRepository bookRepository;
 

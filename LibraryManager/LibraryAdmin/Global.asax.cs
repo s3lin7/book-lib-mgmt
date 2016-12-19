@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataLayer.Interfaces;
+using DataLayer.Repositories;
+//using LibraryAdmin.Application.DependencyManagement;
+using StructureMap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +17,13 @@ namespace LibraryAdmin
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            //IContainer container = new Container(x =>
+            //{
+            //    x.For<IBookRepository>().Use<BookRepository>();
+            //});
+
+            //DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
         }
     }
 }
